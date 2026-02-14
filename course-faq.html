@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Course FAQ and Help</title>
+  <meta name="description" content="Course FAQ and help page with accessible dropdown questions, resources, and an email form." />
+
+  <style>
+    :root{
+      /* Light mode palette (warm, friendly, not grey-heavy) */
+      --page-bg: #fbf6ee;         /* warm cream */
+      --panel-bg: #ffffff;        /* white panels */
+      --panel-tint: #fff7f0;      /* very light peach tint */
+      --border: #e8d9cf;          /* warm border */
+      --text: #1f2937;            /* dark slate */
+      --muted: #435163;           /* softer slate */
+      --link: #1f5fbf;            /* accessible blue */
+      --link-hover: #174a92;
+
+      --accent: #2f6f72;          /* muted teal */
+      --accent-2: #6a4fa3;        /* muted purple */
+      --accent-soft: #e9f4f2;     /* very light teal */
+      --accent-soft-2: #efe9f7;   /* very light purple */
+
+      --button-bg: #2f6f72;
+      --button-text: #ffffff;
+
+      --focus: #111827;           /* strong focus ring */
+      --shadow: 0 8px 18px rgba(31,41,55,0.10);
+
+      --radius: 16px;
+      --radius-sm: 12px;
+    }
+
+    /* Dark mode palette */
+    [data-theme="dark"]{
+      --page-bg: #0f1b24;         /* deep blue */
+      --panel-bg: #122434;        /* not pure black */
+      --panel-tint: #11202e;
+      --border: #244055;
+      --text: #e7eef7;
+      --muted: #b6c5d6;
+      --link: #7bb2ff;
+      --link-hover: #a1c7ff;
+
+      --accent: #5cd0c2;
+      --accent-2: #b59cff;
+      --accent-soft: #12323a;
+      --accent-soft-2: #221b39;
+
+      --button-bg: #5cd0c2;
+      --button-text: #07131a;
+
+      --focus: #ffffff;
+      --shadow: 0 10px 22px rgba(0,0,0,0.35);
+    }
+
+    *{ box-sizing: border-box; }
+    html{ scroll-behavior: smooth; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: var(--page-bg);
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 19px;
+    }
+
+    a{
+      color: var(--link);
+      text-decoration: underline;
+      text-underline-offset: 0.18em;
+    }
+    a:hover{ color: var(--link-hover); }
+
+    .skip-link{
+      position: absolute;
+      left: -999px;
+      top: 0;
+      background: var(--panel-bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+      padding: 10px 12px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      z-index: 9999;
+    }
+    .skip-link:focus{
+      left: 12px;
+      top: 12px;
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .wrap{
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px 16px 72px;
+    }
+
+    header{
+      padding: 18px 16px 10px;
+      background: linear-gradient(180deg, var(--accent-soft), transparent 75%);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
+
+    h1{
+      margin: 6px 0 6px;
+      font-size: 1.9rem;
+      line-height: 1.25;
+      letter-spacing: 0.2px;
+    }
+
+    .subtitle{
+      margin: 0 0 10px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .tools{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    button, .btn{
+      font: inherit;
+      border: 0;
+      background: var(--button-bg);
+      color: var(--button-text);
+      padding: 10px 14px;
+      border-radius: 999px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px; /* touch target */
+    }
+    button:hover, .btn:hover{
+      filter: brightness(0.98);
+    }
+    button:focus-visible, .btn:focus-visible, summary:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible{
+      outline: 3px solid var(--focus);
+      outline-offset: 3px;
+    }
+
+    .tool-secondary{
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .tool-link{
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+      text-decoration: none;
+    }
+
+    .tool-row-label{
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin-right: 6px;
+    }
+
+    .panel{
+      margin-top: 18px;
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 16px;
+      box-shadow: var(--shadow);
+    }
+
+    .panel h2{
+      margin: 0 0 8px;
+      font-size: 1.35rem;
+      line-height: 1.25;
+    }
+    .panel p{
+      margin: 10px 0;
+    }
+
+    .help-strip{
+      display: grid;
+      gap: 14px;
+      margin-top: 16px;
+      padding: 16px;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--accent-soft-2), var(--panel-bg));
+      box-shadow: var(--shadow);
+    }
+    .help-strip .items{
+      display: grid;
+      gap: 8px;
+      color: var(--muted);
+    }
+    .help-strip .actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .jump-note{
+      font-size: 0.98rem;
+      color: var(--muted);
+      margin: 0;
+    }
+
+    .section{
+      margin-top: 22px;
+    }
+
+    .section h2{
+      font-size: 1.45rem;
+      margin: 0 0 10px;
+    }
+
+    .section .section-intro{
+      margin: 0 0 12px;
+      color: var(--muted);
+    }
+
+    details{
+      background: var(--panel-bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 0;
+      margin: 10px 0;
+      overflow: hidden;
+    }
+
+    summary{
+      list-style: none;
+      padding: 14px 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      font-weight: 600;
+    }
+    summary::-webkit-details-marker{ display: none; }
+
+    .summary-icon{
+      flex: 0 0 auto;
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      border: 2px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 3px;
+    }
+    .summary-icon::before{
+      content: "+";
+      font-weight: 700;
+      line-height: 1;
+    }
+    details[open] .summary-icon::before{
+      content: "−";
+    }
+
+    .details-body{
+      padding: 0 14px 14px;
+      border-top: 1px solid var(--border);
+      background: linear-gradient(180deg, var(--panel-tint), var(--panel-bg));
+    }
+
+    .details-body ul{
+      margin: 10px 0 10px 1.1rem;
+    }
+
+    .note{
+      background: var(--accent-soft);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 12px 12px;
+      margin: 12px 0;
+      color: var(--text);
+    }
+
+    .small{
+      font-size: 0.98rem;
+      color: var(--muted);
+    }
+
+    .form{
+      display: grid;
+      gap: 12px;
+      margin-top: 12px;
+    }
+
+    label{
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    input, textarea, select{
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--panel-bg);
+      color: var(--text);
+      font: inherit;
+      min-height: 44px;
+    }
+
+    textarea{
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .row{
+      display: grid;
+      gap: 12px;
+    }
+    @media (min-width: 740px){
+      .row.two{
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .checks{
+      display: grid;
+      gap: 10px;
+      margin: 8px 0 2px;
+    }
+    .check{
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .check input{
+      width: 22px;
+      height: 22px;
+      margin-top: 2px;
+      flex: 0 0 auto;
+    }
+    .check span{
+      color: var(--text);
+    }
+
+    .form-actions{
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin-top: 6px;
+    }
+
+    .status{
+      min-height: 24px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    footer{
+      margin-top: 34px;
+      color: var(--muted);
+      font-size: 0.98rem;
+    }
+
+    .back-top{
+      margin-top: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <div class="wrap">
+    <header>
+      <h1>Course FAQ and Help</h1>
+      <p class="subtitle">Use Modules first. Use this page to answer common questions quickly.</p>
+
+      <div class="tools" role="group" aria-label="Page tools">
+        <button type="button" class="tool-secondary" id="expandAll">Expand all</button>
+        <button type="button" class="tool-secondary" id="collapseAll">Collapse all</button>
+
+        <button type="button" class="tool-secondary" id="themeToggle" aria-pressed="false">
+          Dark mode: Off
+        </button>
+
+        <a class="tool-link" href="#email-form">Jump to email form</a>
+      </div>
+    </header>
+
+    <main id="main">
+      <section class="panel" aria-labelledby="start-h">
+        <h2 id="start-h">Start here</h2>
+        <p>
+          1) Open Modules and work top to bottom.<br />
+          2) Check the assignment page for the exact directions and due date.<br />
+          3) If you are stuck, use the FAQ below to troubleshoot fast.
+        </p>
+        <p class="small">
+          Most questions are answered in the module directions. Learning to find that information is part of college level work.
+        </p>
+      </section>
+
+      <section class="help-strip" aria-labelledby="help-h">
+        <h2 id="help-h" style="margin:0; font-size:1.35rem;">Need help?</h2>
+        <div class="items">
+          <div>Email: <a href="mailto:Georgie.Fehringer-Hicks@greenriver.edu">Georgie.Fehringer-Hicks@greenriver.edu</a></div>
+          <div>Office hours: Wednesdays 10:00 to 12:00 and 1:00 to 3:00 (appointment)</div>
+          <div>Scheduling: <a href="https://calendly.com/georgie-fehringer-hicks-greenriver" target="_blank" rel="noopener">Calendly</a></div>
+        </div>
+        <div class="actions">
+          <a class="btn" href="https://calendly.com/georgie-fehringer-hicks-greenriver" target="_blank" rel="noopener">Book office hours</a>
+          <a class="btn" href="#email-form">Email me (form)</a>
+          <p class="jump-note">The email form opens a draft in your student email.</p>
+        </div>
+      </section>
+
+      <section class="section" aria-labelledby="modules-h">
+        <h2 id="modules-h">Find it in Modules</h2>
+
+        <details>
+          <summary>
+            <span>How do I find the directions in Modules?</span>
+            <span class="summary-icon" aria-hidden="true"></span>
+          </summary>
+          <div class="details-body">
+            <p>
+              Modules are the home base for this course. If you are confused, start there before emailing me. Most problems are solved by finding the exact assignment page and reading the directions once you are looking at the right thing.
+            </p>
+            <ul>
+              <li>Go to Modules and open the current week or unit.</li>
+              <li>Click the actual assignment, discussion, or quiz link inside the module.</li>
+              <li>On the assignment page, find what you are being asked to do, how you are being graded, and where to submit.</li>
+              <li>Check the due date in Canvas. Canvas is the source of truth for due dates.</li>
+              <li>If you still do not get it, narrow the question. Write down the assignment name, the part you do not understand, what you tried, and what you think the directions mean.</li>
+            </ul>
+            <p>
+              "I am confused" is not enough information for me to help quickly. Tell me which step you are stuck on and I can explain it in a different way.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="faq-h">
+        <h2 id="faq-h">FAQ</h2>
+        <p class="section-intro">Click a question to open the answer.</p>
+
+        <details>
+          <summary><span>Where do I start?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Start in Modules. That is the roadmap for this course.</p>
+            <p>If you are unsure what to do next, ask yourself:</p>
+            <ul>
+              <li>What week or unit are we in?</li>
+              <li>What does the module say to do first?</li>
+              <li>What is the next submit or reply task in Canvas?</li>
+            </ul>
+            <p>If you still feel lost after that, email me and tell me which module you are in and what step you got stuck on.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What do I do each week?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Each week you should expect some combination of readings, discussion work, and writing work.</p>
+            <p>Open Modules and work top to bottom. Do not skip ahead unless you are working ahead on purpose.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Where do I find due dates?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Due dates are in Canvas. Always use the date shown in Canvas as your source of truth.</p>
+            <p>If you are ever unsure, check the module for that week or unit, the Canvas calendar or to do list, and the assignment page itself.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="deadlines-h">
+        <h2 id="deadlines-h">Deadlines and extensions</h2>
+
+        <details>
+          <summary><span>Why are deadlines a big deal?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Deadlines are part of the skill in college. They are how you practice planning ahead, managing time, and meeting expectations.</p>
+            <p>In most workplaces, late work is not accepted. College is where you build the habit before the stakes get higher.</p>
+            <p class="note">If you need help, communicate early and include a plan. That is what makes flexibility possible.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Can I get an extension?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Sometimes, yes.</p>
+            <ul>
+              <li>If it is a planned conflict: work ahead. That is the expectation in college.</li>
+              <li>If it is unplanned: email me as soon as possible and include a plan.</li>
+            </ul>
+            <p>If your message is sent after the deadline and does not include a plan, I may not be able to approve an extension.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What should I include in an extension email?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <ul>
+              <li>Your name and course</li>
+              <li>The assignment name</li>
+              <li>The reason, brief and simple</li>
+              <li>What you have completed so far</li>
+              <li>The date and time you will submit</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="drafts-h">
+        <h2 id="drafts-h">Drafts and finals</h2>
+
+        <details>
+          <summary><span>How are drafts graded?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Drafts are graded on a complete or incomplete basis.</p>
+            <p>You will still see a rubric score out of 100 on your draft. That number is there to show what you would have earned if the draft were graded as a final. Use that score to decide how much revision you need before you submit your final.</p>
+            <p>Important note: if you submit your draft as your final without revision, your final score often ends up slightly lower than the draft rubric score. The draft score assumes you will revise.</p>
+            <p>What to do when you get draft feedback:</p>
+            <ul>
+              <li>Read the rubric and look for where points were earned or lost</li>
+              <li>Read the in text annotations if they are included</li>
+              <li>Read the final comments at the end</li>
+              <li>Make a revision plan before you resubmit</li>
+            </ul>
+            <p>If you want help understanding your feedback, you are welcome to email me or schedule office hours.</p>
+            <p>Office hours scheduling link: <a href="https://calendly.com/georgie-fehringer-hicks-greenriver" target="_blank" rel="noopener">Calendly</a></p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What does 65 and below mean for drafts?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>If you receive a score of 65 or below on a Narrative Essay draft rubric, you will be required to complete a Writing Center visit before your draft grade can be marked Complete.</p>
+            <p>To count, the visit must be a synchronous appointment, not an asynchronous document review. Synchronous means meeting with a tutor in real time, on Zoom or in person.</p>
+            <p>When booking, please select or mark that it is a required visit.</p>
+            <p>After your session, the Writing Center will email me your session notes or confirmation. Once I receive confirmation, I will update your draft grade to Complete.</p>
+            <p>If you have questions or need help booking an appointment, reach out as soon as possible.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>How are finals graded?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Final essays receive a grade based on the rubric. The rubric shows where points were earned or lost.</p>
+            <p>Finals do not automatically receive long written feedback. If you would like more detailed feedback on your final essay, you are welcome to meet with me in an office hours appointment.</p>
+            <p>Office hours scheduling link: <a href="https://calendly.com/georgie-fehringer-hicks-greenriver" target="_blank" rel="noopener">Calendly</a></p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Optional Writing Center boost for Narrative Essay finals (scores 65 and below)</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>If you received a score of 65 or below on the Narrative Essay final, you may complete a Writing Center visit to raise your score to a maximum of 70 (passing).</p>
+            <p>This is optional, but I strongly recommend it if you are below passing.</p>
+            <p>To count, the visit must be a synchronous appointment, not an asynchronous document review. Synchronous means meeting with a tutor in real time, on Zoom or in person.</p>
+            <p>When booking, please select or mark that it is a required visit.</p>
+            <p>Deadline: Please complete your visit by Friday, February 27, 2026.</p>
+            <p>After your session, the Writing Center will email me your session notes or confirmation. Once I receive confirmation, I will update your Narrative Essay final score to a maximum of 70.</p>
+            <p>If you have scheduling issues, message me as soon as possible.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Common issues that often lower scores</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>One common issue is missing paragraph breaks. If you are not sure when to start a new paragraph, watch this short video:</p>
+            <p><a href="https://www.youtube.com/watch?time_continue=5&v=Bmu-vIivYs4&embeds_referring_euri=https%3A%2F%2Fegator.greenriver.edu%2F&source_ve_path=Mjg2NjMsMjM4NTE" target="_blank" rel="noopener">Paragraph breaks video</a></p>
+            <p>Another common issue is excessive run on sentences or unclear sentences. If you think this might be happening in your writing, the Writing Center is a good place to get help quickly.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="submit-h">
+        <h2 id="submit-h">Submitting work and tech problems</h2>
+
+        <details>
+          <summary><span>Where do I submit assignments?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Submit work in the course where it is assigned. If the assignment is posted in ENGL&amp;101, submit it in ENGL&amp;101. If it is posted in ENGL117, submit it in ENGL117.</p>
+            <p>If you are unsure, open the assignment page and look for the submit area. If you still cannot find it, email me with the assignment name and a screenshot.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What if Canvas will not let me submit?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Try these steps:</p>
+            <ul>
+              <li>Refresh the page and try again.</li>
+              <li>Try a different browser.</li>
+              <li>Try from a computer if you are on a phone.</li>
+              <li>Take a screenshot of the error message.</li>
+            </ul>
+            <p>If it still does not work, email me as soon as possible and include the screenshot and the assignment name.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="discuss-h">
+        <h2 id="discuss-h">Discussions and annotations</h2>
+
+        <details>
+          <summary><span>What are the discussion requirements?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>For most discussions, you should plan to complete one initial post and two replies to classmates. If you do fewer than two replies, the discussion may be marked incomplete.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What counts as a good reply?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>A strong reply usually does at least one of these:</p>
+            <ul>
+              <li>Responds to something specific the person said</li>
+              <li>Adds a new example or connection</li>
+              <li>Asks a thoughtful question that moves the conversation forward</li>
+            </ul>
+            <p>"Good job" or "I agree" alone usually is not enough.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>How many annotations do I need?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>If an assignment requires annotations, the expectation is usually at least three thoughtful annotations. Fewer than three may be marked incomplete.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>How do I annotate readings in Hypothesis?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Short how to video:</p>
+            <p><a href="https://youtu.be/lm9fiM6Ww0k?si=yvU66sTqBefsT5g5" target="_blank" rel="noopener">Hypothesis annotation video</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="alp-h">
+        <h2 id="alp-h">ENGL117 and ENGL&amp;101</h2>
+
+        <details>
+          <summary><span>I am enrolled in ENGL&amp;101 and ENGL117. What is the difference?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>ENGL&amp;101 is the main composition course. That is where major writing assignments live. ENGL117 is a support course. It is designed to help you succeed in ENGL&amp;101 through extra practice, guidance, and structure.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Do I have to do the same work twice?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>No. You will not write the same essay twice.</p>
+            <p>Some ENGL117 work supports what you are doing in ENGL&amp;101. It is meant to make ENGL&amp;101 easier, not add busywork.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What if I submitted something in the wrong course?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Email me right away and tell me which assignment, where you submitted it, and where it was supposed to go.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="ai-h">
+        <h2 id="ai-h">AI and academic integrity</h2>
+
+        <details>
+          <summary><span>Can I use AI tools for this class?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Sometimes, but it depends on how you use it. A simple rule is that AI can help you think, but AI cannot do the work for you.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What is usually okay?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <ul>
+              <li>Brainstorming topic ideas</li>
+              <li>Generating questions to help you think</li>
+              <li>Getting help understanding instructions, then you still do the work</li>
+              <li>Outlining after you have developed your own ideas</li>
+              <li>Editing support on your own writing for clarity and grammar</li>
+            </ul>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>What is not okay?</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <ul>
+              <li>Having AI write your discussion post, paragraph, or essay for you</li>
+              <li>Copying AI writing and turning it in as your own, even if you tweak it</li>
+              <li>Using AI to complete reading responses without actually reading</li>
+              <li>Using AI to create citations or sources you did not actually use</li>
+            </ul>
+            <p>If you are not sure whether something counts, ask me before you submit.</p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section" aria-labelledby="resources-h">
+        <h2 id="resources-h">Resources</h2>
+
+        <details>
+          <summary><span>Writing help</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Green River Writing and Reading Center:</p>
+            <p><a href="https://www.greenriver.edu/students/academics/tutoring-resources/writing-reading-center.html" target="_blank" rel="noopener">Writing and Reading Center</a></p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Support and counseling</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Green River Counseling Services:</p>
+            <p><a href="https://www.greenriver.edu/campus/campus-resources/counseling-services/index.html" target="_blank" rel="noopener">Counseling Services</a></p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Accommodations</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Disability Support Services:</p>
+            <p><a href="https://www.greenriver.edu/campus/campus-resources/disability-support-services/index.html" target="_blank" rel="noopener">Disability Support Services</a></p>
+          </div>
+        </details>
+
+        <details>
+          <summary><span>Tech help</span><span class="summary-icon" aria-hidden="true"></span></summary>
+          <div class="details-body">
+            <p>Student Technology Support (Canvas, accounts, Office 365):</p>
+            <p><a href="https://www.greenriver.edu/students/student-support-and-services/student-technology-support.html" target="_blank" rel="noopener">Student Technology Support</a></p>
+          </div>
+        </details>
+      </section>
+
+      <section class="section panel" id="email-form" aria-labelledby="email-h">
+        <h2 id="email-h">Email me (form)</h2>
+
+        <p>
+          I am happy to help, and I can help you faster if your message includes the right details.
+          Before you email, check the module directions and identify the exact step you are stuck on.
+        </p>
+
+        <div class="note" role="note" aria-label="Email expectations">
+          If your email does not include the assignment name and what you already tried, I may ask you to resend it with more info.
+        </div>
+
+        <div class="checks" role="group" aria-label="Before you generate the email">
+          <div class="check">
+            <input type="checkbox" id="chkModules" />
+            <span for="chkModules">I checked the module directions for this assignment.</span>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="chkStep" />
+            <span for="chkStep">I can name the exact step where I got stuck.</span>
+          </div>
+          <div class="check">
+            <input type="checkbox" id="chkName" />
+            <span for="chkName">I included the assignment name and week or unit.</span>
+          </div>
+        </div>
+
+        <form class="form" id="emailForm" novalidate>
+          <div class="row two">
+            <div>
+              <label for="studentName">Your name</label>
+              <input id="studentName" name="studentName" autocomplete="name" />
+            </div>
+            <div>
+              <label for="studentEmail">Your student email</label>
+              <input id="studentEmail" name="studentEmail" type="email" autocomplete="email" />
+              <div class="small">This helps me confirm who I am replying to.</div>
+            </div>
+          </div>
+
+          <div class="row two">
+            <div>
+              <label for="course">Course</label>
+              <select id="course" name="course">
+                <option value="ENGL&101">ENGL&101</option>
+                <option value="ENGL117">ENGL117</option>
+                <option value="Both">Both</option>
+              </select>
+            </div>
+            <div>
+              <label for="assignment">Assignment name</label>
+              <input id="assignment" name="assignment" />
+            </div>
+          </div>
+
+          <div>
+            <label for="subject">Email subject</label>
+            <input id="subject" name="subject" placeholder="Example: ENGL&101 Unit 2 Discussion Question" />
+            <div class="small">Subject tip: include the course and assignment name so I can find it quickly.</div>
+          </div>
+
+          <div class="row two">
+            <div>
+              <label for="weekUnit">Week or unit</label>
+              <input id="weekUnit" name="weekUnit" placeholder="Example: Week 4 or Unit 2" />
+            </div>
+            <div>
+              <label for="draftLink">Link to your work (optional)</label>
+              <input id="draftLink" name="draftLink" placeholder="Paste a link if you have one" />
+            </div>
+          </div>
+
+          <div>
+            <label for="tried">What you already tried</label>
+            <textarea id="tried" name="tried" placeholder="Example: I read the module directions and I tried step 3, but I do not understand what counts as a strong reply."></textarea>
+          </div>
+
+          <div>
+            <label for="question">Your specific question</label>
+            <textarea id="question" name="question" placeholder="Tell me the exact step you are stuck on and what you are trying to do."></textarea>
+          </div>
+
+          <div class="note" role="note" aria-label="Extension note">
+            If you are asking about an extension, include the reason (brief), what you have completed so far, and the date and time you will submit.
+          </div>
+
+          <div class="form-actions">
+            <button type="button" id="generateEmail">Generate email draft</button>
+            <button type="reset" class="tool-secondary">Clear form</button>
+          </div>
+
+          <div class="status" id="status" aria-live="polite"></div>
+
+          <p class="small">
+            Need help right now? Try these:
+            <a href="https://www.greenriver.edu/students/academics/tutoring-resources/writing-reading-center.html" target="_blank" rel="noopener">Writing Center</a>,
+            <a href="https://www.greenriver.edu/campus/campus-resources/counseling-services/index.html" target="_blank" rel="noopener">Counseling</a>,
+            <a href="https://www.greenriver.edu/students/student-support-and-services/student-technology-support.html" target="_blank" rel="noopener">Tech Support</a>.
+          </p>
+        </form>
+      </section>
+
+      <footer>
+        <p>
+          If you are stuck after checking Modules and this FAQ, email me with the assignment name and what you tried.
+        </p>
+        <p class="back-top"><a href="#main">Back to top</a></p>
+      </footer>
+    </main>
+  </div>
+
+  <script>
+    (function(){
+      const root = document.documentElement;
+
+      function setTheme(theme, fromUser){
+        root.setAttribute("data-theme", theme);
+        const toggle = document.getElementById("themeToggle");
+        const isDark = theme === "dark";
+        toggle.setAttribute("aria-pressed", String(isDark));
+        toggle.textContent = "Dark mode: " + (isDark ? "On" : "Off");
+        if(fromUser){
+          try { localStorage.setItem("faqTheme", theme); } catch(e) {}
+        }
+      }
+
+      // Initialize theme
+      const saved = (() => {
+        try { return localStorage.getItem("faqTheme"); } catch(e) { return null; }
+      })();
+
+      if(saved === "light" || saved === "dark"){
+        setTheme(saved, false);
+      } else {
+        const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+        setTheme(prefersDark ? "dark" : "light", false);
+      }
+
+      document.getElementById("themeToggle").addEventListener("click", function(){
+        const current = root.getAttribute("data-theme") || "light";
+        setTheme(current === "dark" ? "light" : "dark", true);
+      });
+
+      // Expand and collapse all
+      const allDetails = () => Array.from(document.querySelectorAll("details"));
+
+      document.getElementById("expandAll").addEventListener("click", function(){
+        allDetails().forEach(d => d.open = true);
+      });
+
+      document.getElementById("collapseAll").addEventListener("click", function(){
+        allDetails().forEach(d => d.open = false);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+
+      // Email form to mailto
+      const status = document.getElementById("status");
+
+      function safe(v){
+        return (v || "").trim();
+      }
+
+      function encodeMailto(s){
+        return encodeURIComponent(s).replace(/%20/g, "%20");
+      }
+
+      document.getElementById("generateEmail").addEventListener("click", function(){
+        const to = "Georgie.Fehringer-Hicks@greenriver.edu";
+
+        const name = safe(document.getElementById("studentName").value);
+        const email = safe(document.getElementById("studentEmail").value);
+        const course = safe(document.getElementById("course").value);
+        const assignment = safe(document.getElementById("assignment").value);
+        const weekUnit = safe(document.getElementById("weekUnit").value);
+        const subjectInput = safe(document.getElementById("subject").value);
+        const tried = safe(document.getElementById("tried").value);
+        const question = safe(document.getElementById("question").value);
+        const link = safe(document.getElementById("draftLink").value);
+
+        const missing = [];
+        if(!name) missing.push("your name");
+        if(!assignment) missing.push("assignment name");
+        if(!question) missing.push("your question");
+        if(missing.length){
+          status.textContent = "Please add: " + missing.join(", ") + ".";
+          return;
+        }
+
+        const subject = subjectInput || (course + " " + (weekUnit ? (weekUnit + " ") : "") + assignment + " question");
+
+        const lines = [];
+        lines.push("Hello Professor Fehringer-Hicks,");
+        lines.push("");
+        lines.push("My name is " + name + ".");
+        if(email) lines.push("My student email is " + email + ".");
+        lines.push("Course: " + course + ".");
+        if(weekUnit) lines.push("Week or unit: " + weekUnit + ".");
+        lines.push("Assignment: " + assignment + ".");
+        lines.push("");
+        if(tried){
+          lines.push("What I already tried:");
+          lines.push(tried);
+          lines.push("");
+        }
+        lines.push("My question:");
+        lines.push(question);
+        lines.push("");
+        if(link){
+          lines.push("Link to my work:");
+          lines.push(link);
+          lines.push("");
+        }
+        lines.push("Thank you,");
+        lines.push(name);
+
+        const body = lines.join("\n");
+        const href = "mailto:" + encodeURIComponent(to) + "?subject=" + encodeMailto(subject) + "&body=" + encodeMailto(body);
+
+        status.textContent = "Opening your email draft now.";
+        window.location.href = href;
+      });
+
+      // Improve summary keyboard announcement for screen readers
+      document.querySelectorAll("summary").forEach(s => {
+        s.setAttribute("role", "button");
+        s.setAttribute("aria-controls", "");
+      });
+    })();
+  </script>
+</body>
+</html>
